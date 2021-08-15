@@ -1,2 +1,2 @@
 # DataStructures_and_algorithms
-all solution for every concept available
+Every concept is coverd clearly
