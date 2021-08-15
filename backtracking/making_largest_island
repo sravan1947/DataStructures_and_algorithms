@@ -1,0 +1,169 @@
+//Making A Large Island
+You are given an n x n binary matrix grid. You are allowed to change at most one 0 to be 1.
+
+Return the size of the largest island in grid after applying this operation.
+
+An island is a 4-directionally connected group of 1s.
+
+ 
+ 
+class Solution {
+public:
+   int  c=0;
+   //keeping pair of unordered_map
+    struct hash_pair {
+        template <class T1, class T2>
+        size_t operator()(const pair<T1, T2>& p) const
+        {
+            auto hash1 = hash<T1>{}(p.first);
+            auto hash2 = hash<T2>{}(p.second);
+            return hash1 ^ hash2;
+        }
+   };  
+    void max_island(vector<vector<int>> &grid, unordered_map<pair<int,int>,int,hash_pair> &vis,int n,int m,int i,int j)
+    {
+        if(i<0||j<0||i>=n||j>=m||grid[i][j]==0)
+        {
+            return;
+        }
+        else
+            if(vis[pair<int, int>(i,j)]==1)  // keeping track of indices so that other elements can't be visited
+                return;
+        
+        else
+        {
+            vis[pair<int, int>(i,j)]=1;
+            c+=grid[i][j];
+            // covering four direction as given
+            max_island(grid,vis,n,m,i+1,j);
+            max_island(grid,vis,n,m,i,j+1);
+            max_island(grid,vis,n,m,i-1,j);
+            max_island(grid,vis,n,m,i,j-1);
+        }
+    }  
+    int largestIsland(vector<vector<int>>& grid) {
+        c=0;
+        int n=grid.size();
+        int m= grid[0].size();
+        int ans=-1;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(grid[i][j]==0)
+                {
+                    grid[i][j]=1;
+                    unordered_map<pair<int,int>,int,hash_pair> vis;
+                    max_island(grid,vis,m,n,i,j);
+                    ans=max(ans,c);
+                    c=0;
+                     grid[i][j]=0;
+                }
+            }
+        }
+        if(ans==-1)
+            return(n*n);
+        return(ans);
+    }
+};
+
+Making A Large Island
+
+You are given an n x n binary matrix grid. You are allowed to change at most one 0 to be 1.
+
+Return the size of the largest island in grid after applying this operation.
+
+An island is a 4-directionally connected group of 1s.
+
+ class Solution {
+public:
+    int check(int i,int j,int n,int m,vector<vector<int>> &grid)
+    {
+        if(i<0||j<0||i>=n||j>=m)
+            return(0);
+        if(grid[i][j]==0)
+            return(0);
+        return(1);
+    }
+    int valid(int i,int j,int n,int m)
+    {
+        if(i<0||j<0||i>=n||j>=m)
+            return(0);
+        
+        return(1);
+    }
+    int fun(vector<vector<int>> &grid,int i,int j,int n,int m, map<int,int> &Colour,int Index)
+    {
+        
+        if(!(valid(i,j,n,m))||grid[i][j]==Index)
+        {
+            return(0);
+        }
+       if(grid[i][j]==0)
+           return(0);
+        else
+        {
+            grid[i][j]=Index;
+        return(1+fun(grid,i+1,j,n,m,Colour,Index)+fun(grid,i,j+1,n,m,Colour,Index)+fun(grid,i-1,j,n,m,Colour,Index)+fun(grid,i,j-1,n,m,Colour,Index));
+        }
+        
+    }
+    int largestIsland(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int m=grid[0].size();
+        map<int,int> Colour;
+        int Index=2;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(grid[i][j]==1)
+                {
+                    Colour[Index]=fun(grid,i,j,n,m,Colour,Index);
+                    cout<<i<<" "<<j<<"\n";
+                    cout<<Colour[Index]<<" "<<Index<<"\n";
+                    Index++;
+                }
+            }
+        }
+        int f_ans=0;
+        map<int,int> mp;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(grid[i][j]==0)
+                {
+                    
+                    int c=0;
+                    if(check(i+1,j,n,m,grid))
+                    {
+                        c+=Colour[grid[i+1][j]];
+                        mp[grid[i+1][j]]=1;
+                    }
+                    if(check(i-1,j,n,m,grid)&&mp.count(grid[i-1][j])==0)
+                    {
+                        c+=Colour[grid[i-1][j]];
+                        mp[grid[i-1][j]]=1;
+                    }
+                    if(check(i,j+1,n,m,grid)&&mp.count(grid[i][j+1])==0)
+                    {
+                        c+=Colour[grid[i][j+1]];
+                        mp[grid[i][j+1]]=1;
+                    }
+                    if(check(i,j-1,n,m,grid)&&mp.count(grid[i][j-1])==0)
+                    {
+                        c+=Colour[grid[i][j-1]];
+                        mp[grid[i][j-1]]=1;
+                    }
+                    mp.clear();
+                    f_ans=max(f_ans,c+1);
+                }
+            }
+        }
+        if(f_ans==0)
+            return(n*m);
+        return(f_ans);
+    }
+        
+};
