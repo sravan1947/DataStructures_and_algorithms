@@ -1,0 +1,87 @@
+Given an m x n integer matrix matrix, if an element is 0, set its entire row and column to 0's, and return the matrix.
+
+You must do it in place.
+
+
+approach one with out doing inplace (using extra space)  :
+
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        map<pair<int,int>,int> ma;
+        
+        int n=matrix.size();
+        int m=matrix[0].size();
+        int row[n],column[m];
+        memset(row,-1,sizeof(row));
+            memset(column,-1,sizeof(column));
+
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(matrix[i][j]==0)
+                {
+                    row[i]=0;
+                    column[j]=0;
+                }
+            }
+        }
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(row[i]==0||column[j]==0)
+                {
+                      matrix[i][j]=0;      
+                }
+            }
+        }
+    }
+};
+
+approach two with out doing inplace (with out using extra space)  :
+
+
+
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        map<pair<int,int>,int> ma;
+        
+        int n=matrix.size();
+        int m=matrix[0].size();
+     
+        bool column= true; // to track the first column is zero or not 
+        for(int i=0;i<n;i++)
+        {
+            if(matrix[i][0]==0)
+            {
+              column=false;
+            }
+            for(int j=1;j<m;j++)
+            {
+                if(matrix[i][j]==0)
+                {
+                    matrix[i][0]=0;
+                    matrix[0][j]=0;
+                }
+            }
+        } 
+        for(int i=n-1;i>=0;i--)
+        {
+            for(int j=m-1;j>=1;j--)
+            {
+                if(matrix[i][0]==0||matrix[0][j]==0)
+                {
+                    matrix[i][j]=0;
+                    matrix[i][j]=0;
+                }
+            }
+            if(column==false)
+            {
+                matrix[i][0]=0;
+            }
+        }
+    }
+};
