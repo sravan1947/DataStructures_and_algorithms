@@ -1,0 +1,58 @@
+//next_greatest_element  using next_permutation()
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        next_permutation(nums.begin(),nums.end());
+        
+    }
+};
+
+
+// using the approach
+step1 : travse from back and find the element which is less the previous element
+step 2: swap the element with it's next greatest element
+step 3: reverse the array after the index of that element.
+
+//for better understanding do the do the permutations of numbers  1,2,3,4,5.
+
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        int n=nums.size();
+        if(n==1)
+            return;
+        int i=n-1;
+        while(i>0)
+        {
+            if(nums[i-1]<nums[i])
+            {
+                break;
+            }
+            i--;
+        }
+        if(i==0)
+        {
+            reverse(nums.begin(),nums.end());
+        }
+        else
+        {
+            int k=nums[i-1];
+            int ans=INT_MAX,index=-1;
+            for(int j=i;j<n;j++)
+            {
+                if(nums[j]>k and ans>=nums[j])
+                {
+                    ans=nums[j];
+                    index=j;
+                }
+            }
+            if(index!=-1)
+            {
+                swap(nums[i-1],nums[index]);
+                reverse(nums.begin()+i,nums.end());
+            }
+           
+            
+        }
+    }
+};

@@ -1,0 +1,84 @@
+You are given an integer array nums of 2 * n integers. You need to partition nums into two arrays of length n to minimize the absolute difference of the sums of the arrays. To partition nums, put each element of nums into one of the two arrays.
+
+Return the minimum possible absolute difference.
+
+Input: nums = [3,9,7,3]
+Output: 2
+Explanation: One optimal partition is: [3,9] and [7,3].
+The absolute difference between the sums of the arrays is abs((3 + 9) - (7 + 3)) = 2.
+
+
+
+approach :
+ step1: take two 2d arry of size n/2 left and right array.
+ step2: stores the sum of the values as it's size  in the vector for both left and right array.
+ step3: now find the value in the second array. by using the formulae s-2*a-2*b=0
+
+class Solution {
+public:
+    int ans=INT_MAX,total_sum;
+    void fun(vector<int> &nums,int i,int n,int su,int si,vector<vector<int>> &v)
+    {
+         if(si>0)
+        {
+         v[si].push_back(su);
+        }
+        if(i==n)
+        {
+            return;
+        }
+          
+        for(int j=i;j<n;j++)
+        {
+            si++;
+            su+=nums[j];
+            fun(nums,j+1,n,su,si,v);
+            su-=nums[j];
+            si--;
+        }
+        
+    }
+    int minimumDifference(vector<int>& nums) {
+        int n=nums.size();
+        vector<vector<int>> l(n/2+1),r(n/2+1);
+        int si=0,su=0;
+        fun(nums,0,n/2,su,si,l);
+        fun(nums,n/2,n,su,si,r);
+        int k=r.size();
+        for(int i=1;i<k;i++)
+        {
+            sort(r[i].begin(),r[i].end());
+        }
+        int total_sum=accumulate(nums.begin(),nums.end(),0);
+        // for(int i=1;i<=n;i++)
+        // {
+        //     cout<<l[i].size()<<endl;
+        //     cout<<r[i].size()<<endl;
+        // }
+       int mi=min(abs(total_sum-2*l[n/2][0]),abs(total_sum-2*r[n/2][0]));
+      
+      for(int i=1;i<n/2;i++)
+      {
+          for(auto j=l[i].begin();j!=l[i].end();j++)
+          {
+              int a = (*j);
+              int b=(total_sum-2*a)/2;
+              auto &v=r[n/2-i];
+              auto it = lower_bound(v.begin(),v.end(),b);
+               
+              if(it!=v.end())
+              {
+                  mi=min(mi,abs(total_sum-2*a-2*(*it)));
+              }
+              if(it!=v.begin())
+              {
+                  auto itr =it;
+                --itr;
+                   mi=min(mi,abs(total_sum-2*a-2*(*itr)));
+              }
+            }
+        }
+        return(mi);
+    }
+};
+

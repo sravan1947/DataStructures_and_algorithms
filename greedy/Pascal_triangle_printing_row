@@ -1,0 +1,45 @@
+Pascal Triangle O(n2) Solution ( brute force approach) :-
+
+
+class Solution {
+public:
+    vector<int> getRow(int rowIndex) {
+        vector<int> v(rowIndex+1);
+        for(int i=0;i<=rowIndex;i++)
+        {
+            vector<int> temp(i+1);
+            temp[0]=1;
+            temp[i]=1;
+            for(int j=1;j<i;j++)
+            {
+               temp[j]=v[j]+v[j-1]; 
+            }
+            v=temp;
+        }
+        return(v);
+    }
+};
+
+Pacal Triangle bionomial formula approach  row formula : nc0+nc1+nc2+nc3+...+ncn form nth row :-
+
+class Solution {
+public:
+    vector<int> getRow(int n) {
+        vector<int> v;
+            v.push_back(1);
+            long result=1;
+        
+            for(int i=1;i<n+1;i++)
+            {
+                result=result*(n+1-i);
+                result=result/i;
+                v.push_back(result);
+            }
+        
+      return(v);
+            
+        
+    }
+};
+
+Pacal Triangle bionomial formula approach  row and column formula : (row-1)c(column-1) for nth row and column :-

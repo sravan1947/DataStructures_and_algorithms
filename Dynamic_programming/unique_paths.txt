@@ -1,0 +1,73 @@
+A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
+
+The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
+
+How many possible unique paths are there?
+
+
+class Solution {
+public:
+    int foo(vector<vector<int>> &dp,int n,int m,int i,int j)
+    {
+        cout<<i<<" "<<j<<endl;
+        if(i==0||j==0)
+            return(0);
+        else
+            if(dp[i][j]!=-1)
+            {
+                return(dp[i][j]);
+            }
+        else
+            return(dp[i][j]=foo(dp,n,m,i,j-1)+foo(dp,n,m,i-1,j));
+    }
+    int uniquePaths(int n, int m) {
+        vector<vector<int>> dp(n+1,vector<int>(m+1));
+        for(int i=0;i<=n;i++)
+        {
+            for(int j=0;j<=m;j++)
+            {
+                if(i==1||j==1)
+                {
+                    dp[i][j]=1;
+                }
+                else
+                    dp[i][j]=-1;
+            }
+        }
+        return(foo(dp,n,m,n,m));
+    }
+};
+
+
+class Solution {
+public:
+    int foo(vector<vector<int>> &dp,int n,int m,int i,int j)
+    {
+        cout<<i<<" "<<j<<endl;
+        if(i==0||j==0)
+            return(0);
+        else
+            if(dp[i][j]!=-1)
+            {
+                return(dp[i][j]);
+            }
+        else
+            return(dp[i][j]=foo(dp,n,m,i,j-1)+foo(dp,n,m,i-1,j));
+    }
+    int uniquePaths(int n, int m) {
+        vector<vector<int>> dp(n+1,vector<int>(m+1));
+        for(int i=0;i<=n;i++)
+        {
+            for(int j=0;j<=m;j++)
+            {
+                if(i==1||j==1)
+                {
+                    dp[i][j]=1;
+                }
+                else
+                    dp[i][j]=-1;
+            }
+        }
+        return(foo(dp,n,m,n,m));
+    }
+};
