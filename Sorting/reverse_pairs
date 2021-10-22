@@ -1,0 +1,92 @@
+Given an integer array nums, return the number of reverse pairs in the array.
+
+A reverse pair is a pair (i, j) where 0 <= i < j < nums.length and nums[i] > 2 * nums[j].
+
+ Input: nums = [1,3,2,3,1]
+Output: 2
+
+solve using merge sort.
+
+
+class Solution {
+public:
+    int ans=0;
+    void conquer(int i,int in,int j,int jn,vector<int> &nums)
+    {
+       //cout<<" "<<i<<" "<<in<<" "<<j<<" "<<jn<<endl;
+        int initial=i;
+       int arr[jn-i+1];
+        int k=0;
+        int f1=i,f2=j;
+        while(f1<=in&&f2<=jn)
+        {
+            if((nums[f1]/2.0)>nums[f2])
+            {
+                ans+=(in-f1+1);
+                f2++;
+            }
+            else
+            {
+                f1++;
+            }
+        }
+       while(i<=in&&j<=jn)
+       {
+           if(nums[i]<=nums[j])
+           {
+               arr[k]=nums[i];
+               k++;
+               i++;
+           }
+           else
+           {
+               int f=i;
+             
+              
+               // cout<<f<<" "<<nums[f]<<" "<<j<<" "<<nums[j]<<endl;
+                arr[k]=nums[j];
+                k++;
+                j++;
+         
+          }
+       }
+          while(i<=in)
+          {
+              arr[k]=nums[i];
+                   k++;
+                   i++;
+          }
+        while(j<=jn)
+        {
+           arr[k]=nums[j];
+               k++;
+               j++; 
+        }
+        
+       for(int f=0;f<k;f++)
+       {
+           
+           nums[initial]=arr[f];
+           initial++;
+       }
+       // cout<<endl;
+    }
+    void divide(int i,int j,vector<int> &nums)
+    {
+       // cout<<i<<endl;
+        if(i<j)
+        {
+            int mid = (i+j)/2;
+            divide(i,mid,nums);
+            divide(mid+1,j,nums);
+             conquer(i,mid,mid+1,j,nums);
+        }
+    }
+    int reversePairs(vector<int>& nums) {
+        int n=nums.size();
+        int i=0,j=n-1;
+        divide(i,j,nums);
+      
+        return(ans);
+    }
+};
