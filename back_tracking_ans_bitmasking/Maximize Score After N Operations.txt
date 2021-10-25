@@ -1,0 +1,60 @@
+You are given nums, an array of positive integers of size 2 * n. You must perform n operations on this array.
+
+In the ith operation (1-indexed), you will:
+
+Choose two elements, x and y.
+Receive a score of i * gcd(x, y).
+Remove x and y from nums.
+Return the maximum score you can receive after performing n operations.
+
+The function gcd(x, y) is the greatest common divisor of x and y.
+
+Input: nums = [1,2]
+Output: 1
+Explanation: The optimal choice of operations is:
+(1 * gcd(1, 2)) = 1
+
+class Solution {
+public:
+    int m,n;
+    int memo[(1<<14)]={};
+    int gcd[14][14]={};
+    int dp(int mask,int i,int j,int op,vector<int> &nums)
+    {
+        if(op>m)
+            return(0);
+        if(memo[mask])
+            return(memo[mask]);
+        
+           for(int i=0;i<n;i++)
+           {
+               if(((mask>>i)&1))
+                     continue;
+               for(int j=i+1;j<n;j++)
+               {
+                   if(((mask>>j)&1))
+                       continue;
+                int   new_mask=((1<<i)|(1<<j)|(mask));
+                   int ans=op*gcd_value(i,j,nums)+dp(new_mask,i,j,op+1,nums);
+                   memo[mask]=max(memo[mask],ans);
+                   
+               }
+           }      
+        return(memo[mask]);
+    }
+    int gcd_value(int i,int j,vector<int> &nums)
+    {
+            if(gcd[i][j])
+                return(gcd[i][j]);
+        return(gcd[i][j]=__gcd(nums[i],nums[j]));
+    }
+    
+    int maxScore(vector<int>& nums) {
+        int mask=0;
+        n=nums.size();
+        m=n/2;
+        int op=1;
+        return(dp(mask,0,0,op,nums));
+    }
+   
+};
