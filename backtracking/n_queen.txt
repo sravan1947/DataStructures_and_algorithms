@@ -1,0 +1,119 @@
+The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
+
+Given an integer n, return all distinct solutions to the n-queens puzzle. You may return the answer in any order.
+
+Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space, respectively.
+
+ 
+Input: n = 4
+Output: [[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
+Explanation: There exist two distinct solutions to the 4-queens puzzle as shown above
+
+
+class Solution {
+public:
+    vector<vector<string>> v;
+    int check(vector<string> &st,int i,int j,int n)
+    {
+        int dui=i,duj=j;
+        while(dui>=0&&duj>=0)
+        {
+            if(st[dui][duj]=='Q')
+                return(0);
+            dui--;
+            duj--;
+        }
+        
+        int ddi=i,ddj=j;
+        while(ddi<n&&ddj<n)
+        {
+            if(st[ddi][ddj]=='Q')
+                return(0);
+            ddi++;
+            ddj++;
+        }
+        int di=i,dj=j;
+        while(di<n&&dj<n)
+        {
+            if(st[di][dj]=='Q')
+                return(0);
+            di++;
+        }
+          int ri=i,rj=j;
+        while(ri<n&&rj<n)
+        {
+            if(st[ri][rj]=='Q')
+                return(0);
+            rj++;
+        }
+         int ui=i,uj=j;
+        while(ui>=0&&uj>=0)
+        {
+            if(st[ui][uj]=='Q')
+                return(0);
+            ui--;
+        }
+        int li=i,lj=j;
+          while(li>=0&&lj>=0)
+            {
+            if(st[li][lj]=='Q')
+                return(0);
+            lj--;
+            }
+        int dli=i,dlj=j;
+        while(dli>=0&&dlj<n)
+        {
+            if(st[dli][dlj]=='Q')
+                return(0);
+            dli--;
+            dlj++;
+        }
+         int dri=i,drj=j;
+        while(dri<n&&drj>=0)
+        {
+            if(st[dri][drj]=='Q')
+                return(0);
+            dri++;
+            drj--;
+        }
+       // cout<<i<<j<<endl;
+        return(1);
+    }
+    
+    void fun(int i,int ans,int n,vector<string> &st)
+    {
+        if(ans==n)
+        {
+            v.push_back(st);
+        }
+        if(i==n)
+            return;
+     
+        for(int j=0;j<n;j++)
+        {
+            if(check(st,i,j,n))
+            {
+                st[i][j]='Q';
+                fun(i+1,ans+1,n,st);
+                st[i][j]='.';
+                
+            }
+        }
+    }
+    vector<vector<string>> solveNQueens(int n) {
+        int ans=0;
+        vector<string> st;
+        for(int i=0;i<n;i++)
+        {
+            string str="";
+            for(int j=0;j<n;j++)
+            {
+                str+='.';
+            }
+            st.push_back(str);
+          //  cout<<st[i]<<endl;
+        }
+        fun(0,ans,n,st);
+        return(v);
+    }
+};

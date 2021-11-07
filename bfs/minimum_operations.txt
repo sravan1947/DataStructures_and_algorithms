@@ -1,0 +1,46 @@
+class Solution {
+public:
+    int minimumOperations(vector<int>& nums, int start, int goal) {
+        
+        int n=nums.size();
+        int i=0;
+        int vis[2000];
+        memset(vis,0,sizeof(vis));
+        queue<int> q;
+        q.push(start);
+        int op=0;
+        while(!q.empty())
+        {
+            int si=q.size();
+            while(si--)
+            {
+                int ele=q.front();
+                //cout<<ele<<endl;
+                q.pop();
+                if(ele==goal)
+                {   
+                    return(op);
+                }
+                if(ele>1000||ele<0||vis[ele])
+                    continue;
+                
+                vis[ele]=1; 
+                int n=nums.size();
+                int a,b,c;
+                for(int i=0;i<n;i++)
+                {
+                    a=ele+nums[i];
+                    b=ele-nums[i];
+                    c=ele^nums[i];
+                     q.push(a);
+                    q.push(b);
+                    q.push(c);
+                }
+               // cout<<a<<" "<<b<<" "<<c<<endl;
+               
+            }
+            op++;
+        }
+        return(-1);
+    }
+};
