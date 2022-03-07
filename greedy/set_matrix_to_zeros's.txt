@@ -1,7 +1,10 @@
-Given an m x n integer matrix matrix, if an element is 0, set its entire row and column to 0's, and return the matrix.
+Given an m x n integer matrix , if an element is 0, set its entire row and column to 0's, 
+and return the matrix.
 
 You must do it in place.
 
+Input: matrix = [[1,1,1],[1,0,1],[1,1,1]]
+Output: [[1,0,1],[0,0,0],[1,0,1]]
 
 approach one with out doing inplace (using extra space)  :
 
@@ -14,7 +17,7 @@ public:
         int m=matrix[0].size();
         int row[n],column[m];
         memset(row,-1,sizeof(row));
-            memset(column,-1,sizeof(column));
+        memset(column,-1,sizeof(column));
 
         for(int i=0;i<n;i++)
         {
@@ -74,7 +77,6 @@ public:
             {
                 if(matrix[i][0]==0||matrix[0][j]==0)
                 {
-                    matrix[i][j]=0;
                     matrix[i][j]=0;
                 }
             }
