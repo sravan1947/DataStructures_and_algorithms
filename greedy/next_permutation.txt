@@ -9,7 +9,8 @@ public:
 
 
 // using the approach
-step1 : travse from back and find the element which is less the previous element
+step1 : travse from back and find the element which is less the 
+previous element
 step 2: swap the element with it's next greatest element
 step 3: reverse the array after the index of that element.
 
