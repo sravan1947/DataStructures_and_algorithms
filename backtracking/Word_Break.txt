@@ -1,0 +1,40 @@
+class Solution {
+public:
+    unordered_set<string> w_s;
+    int dp[1000][1000];
+    bool backtrack(string st,string &s,int i,int n,int m)
+    {
+        if(m==n)
+        {
+            return(dp[i][m]=true);
+        }
+        if(dp[i][m]!=-1)
+            return(dp[i][m]);
+        if(w_s.count(st)==1)
+        {
+            m+=st.length();
+            if(backtrack("",s,i,n,m))
+                return(dp[i][m]=true);
+            m-=st.length();
+            
+        }
+        if(i==n)
+            return(dp[i][m]=false);
+        
+        return(dp[i][m]=backtrack(st+s[i],s,i+1,n,m));
+        
+    }
+    bool wordBreak(string s, vector<string>& wordDict) {
+        int n=wordDict.size();
+        for(int i=0;i<n;i++)
+        {
+            w_s.insert(wordDict[i]);
+        }
+        memset(dp,-1,sizeof(dp));
+        string st="";
+        string f="";
+        n=s.length();
+        int m=0;
+        return(backtrack(st,s,0,n,m));
+    }
+};

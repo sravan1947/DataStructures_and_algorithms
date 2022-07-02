@@ -1,0 +1,68 @@
+You are given an m x n grid where each cell can have one of three values:
+
+0 representing an empty cell,
+1 representing a fresh orange, or
+2 representing a rotten orange.
+Every minute, any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten.
+
+Return the minimum number of minutes that must elapse until no cell has a fresh orange. If this is impossible, return -1.
+
+Input: grid = [[2,1,1],[1,1,0],[0,1,1]]
+Output: 4
+
+Input: grid = [[2,1,1],[0,1,1],[1,0,1]]
+Output: -1
+
+
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int m=grid[0].size();
+        int x[]={1,0,-1,0};
+        int y[]={0,1,0,-1};
+        queue<pair<pair<int,int>,int>> que ;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(grid[i][j]==2)
+                {
+                    que.push({{i,j},0});
+                }
+            }
+        }
+        
+        int ans=0;
+        while(!que.empty())
+        {
+            int x_d=que.front().first.first;
+             int y_d=que.front().first.second;
+             grid[x_d][y_d]=0;
+            int c=que.front().second;
+             ans=max(ans,c);
+            for(int i=0;i<4;i++)
+            {
+                if(x_d+x[i]>=0&&x_d+x[i]<n&&y_d+y[i]>=0&&y_d+y[i]<m&&grid[x_d+x[i]][y_d+y[i]]==1)
+                    {
+                        que.push({{x_d+x[i],y_d+y[i]},c+1});
+                       grid[x_d+x[i]][y_d+y[i]]=0;
+                        
+                    }
+            }
+            que.pop();
+        }
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(grid[i][j]==1)
+                {
+                    return(-1);        
+                }
+            }
+        }
+        return(ans);
+        
+    }
+};

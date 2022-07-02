@@ -1,0 +1,152 @@
+116. Populating Next Right Pointers in Each Node
+
+You are given a perfect binary tree where all leaves are on the same level, and every parent has two children. 
+The binary tree has the following definition:
+
+struct Node {
+  int val;
+  Node *left;
+  Node *right;
+  Node *next;
+}
+Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to NULL.
+
+Initially, all next pointers are set to NULL.
+
+
+
+
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+    Node* next;
+
+    Node() : val(0), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val, Node* _left, Node* _right, Node* _next)
+        : val(_val), left(_left), right(_right), next(_next) {}
+};
+*/
+
+___________________________________________________
+(with loops)
+class Solution {
+public:
+    Node* connect(Node* root) {
+        Node* temp=root;
+        Node* prev;
+        while(temp&&temp->left!=NULL)
+        {
+            prev=temp;
+            while(prev)
+            {
+                prev->left->next=prev->right;
+                if(prev->next)
+                {
+                    prev->right->next=prev->next->left;
+                }
+                prev=prev->next;
+            }
+            temp=temp->left;
+        }
+        return(root);
+    }
+};
+
+______________________________________________________
+(using queue)
+
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+    Node* next;
+
+    Node() : val(0), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val, Node* _left, Node* _right, Node* _next)
+        : val(_val), left(_left), right(_right), next(_next) {}
+};
+*/
+
+class Solution {
+public:
+    Node* connect(Node* root) {
+        queue<Node* > q;
+        if(root!=NULL)
+        { 
+            q.push(root);
+            root->next=NULL;
+        }
+        
+        while(!q.empty())
+        {
+           int n=q.size();
+            vector<Node *> v;
+            for(int i=0;i<n;i++)
+            {
+              Node* temp=q.front();
+                if(temp->left!=NULL)
+                {
+                    v.push_back(temp->left);
+                    q.push(temp->left);
+                }
+                if(temp->right!=NULL)
+                {
+                    v.push_back(temp->right);
+                    q.push(temp->right);
+                }
+                q.pop();
+            }
+             n=v.size();
+            for(int i=0;i<n-1;i++)
+            {
+                v[i]->next=v[i+1];
+            }
+            if(n>0)
+            {
+                v[n-1]->next=NULL;
+            }
+            
+        }
+        return(root);
+    }
+};
+
+____________________________________________________________________________________________________
+using stacks
+
+void pre(Node* root,Node* par)
+{
+    if(root!=NULL)
+    {
+        root->next=par;
+        pre(root->left,root->right);
+        if(par!=NULL)
+        pre(root->right,par->left);
+        else
+           pre(root->right,par); 
+    }
+}
+class Solution {
+public:
+    Node* connect(Node* root) {
+        if(root!=NULL)
+          {
+            Node* par=NULL;
+            pre(root,par);
+            }
+        return(root);
+    }
+};

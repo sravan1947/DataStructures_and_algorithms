@@ -1,0 +1,87 @@
+
+151. Reverse Words in a String
+
+
+Given an input string s, reverse the order of the words.
+
+A word is defined as a sequence of non-space characters. The words in s will be separated by at least one space.
+
+Return a string of the words in reverse order concatenated by a single space.
+
+Note that s may contain leading or trailing spaces or multiple spaces between two words. The returned string should only
+ have a single space separating the words. Do not include any extra spaces.
+
+class Solution {
+public:
+    string reverseWords(string s) {
+        int n=s.length();
+        string f_ans="";
+        string temp="";
+        int f=0;
+        for(int i=n-1;i>=0;i--)
+        {
+            if(s[i]!=' ')
+            {
+                temp+=s[i];
+                f=1;
+               
+            }
+            else
+            {
+                while(i>=0&&s[i]==' ')
+                {
+                    i--;
+                }
+                i++;
+                if(f)
+                {
+                    reverse(temp.begin(),temp.end());
+                    f_ans+=temp;
+                    f_ans+=' ';
+                    f=0;
+                    temp="";
+                }
+            }
+        }
+         if(f)
+                {
+                    reverse(temp.begin(),temp.end());
+                    f_ans+=temp;
+                    f_ans+=' ';
+                    f=0;
+                    temp="";
+                }
+        f_ans.pop_back();
+        return(f_ans);
+    }
+};
+
+
+Follow-up: If the string data type is mutable in your language, can you solve it in-place with O(1) extra space?
+
+class Solution {
+public:
+    string reverseWords(string s) {
+        reverse(s.begin(),s.end());
+        int n=s.length();
+        int s_index=0;
+        for(int i=0;i<n;i++)
+        {
+            if(s[i]!=' ')
+            {
+                if (s_index != 0) s[s_index++] = ' ';
+                int j=i;
+                while(j<n&&s[j]!=' ')
+                {
+                    s[s_index++]=s[j];
+                    j++;
+                }
+                reverse(s.begin()+s_index-(j-i),s.begin()+s_index);
+                i=j;
+            }
+        }
+        s.erase(s.begin()+s_index,s.end());
+       
+        return(s);
+    }
+};

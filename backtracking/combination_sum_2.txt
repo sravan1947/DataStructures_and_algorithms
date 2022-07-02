@@ -1,0 +1,39 @@
+40. Combination Sum II
+
+Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sum to target.
+
+Each number in candidates may only be used once in the combination.
+
+Note: The solution set must not contain duplicate combinations.
+
+
+class Solution {
+public:
+    vector<vector<int>> f_ans;
+    void backtrack(vector<int> &can,int su,int i,vector<int> &com,int n)
+    {
+        if(su==0)
+        {
+            f_ans.push_back(com);
+            return;
+        }
+        for(int j=i;j<n;j++)
+        {
+            if(su<can[j])
+                return;
+            if(j&&can[j-1]==can[j]&&j>i)
+            {
+                continue;
+            }
+            com.push_back(can[j]);
+            backtrack(can,su-can[j],j+1,com,n);
+            com.pop_back();
+        }
+    }
+    vector<vector<int>> combinationSum2(vector<int>& can, int target) {
+        vector<int> com;
+        sort(can.begin(),can.end());
+        backtrack(can,target,0,com,can.size());
+        return(f_ans);
+    }
+};

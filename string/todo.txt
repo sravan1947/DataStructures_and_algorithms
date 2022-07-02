@@ -1,0 +1,3 @@
+Prefix Function/Z-Function
+KMP algo 
+Minimum characters needed to be inserted in the beginning to make it palindromic. 

@@ -9,111 +9,55 @@ Input: n = 4
 Output: [[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
 Explanation: There exist two distinct solutions to the 4-queens puzzle as shown above
 
-
 class Solution {
 public:
-    vector<vector<string>> v;
-    int check(vector<string> &st,int i,int j,int n)
+     vector<vector<string>> ans;
+    int isvalid(int row,int col,vector<string> &q,int n)
     {
-        int dui=i,duj=j;
-        while(dui>=0&&duj>=0)
-        {
-            if(st[dui][duj]=='Q')
-                return(0);
-            dui--;
-            duj--;
-        }
-        
-        int ddi=i,ddj=j;
-        while(ddi<n&&ddj<n)
-        {
-            if(st[ddi][ddj]=='Q')
-                return(0);
-            ddi++;
-            ddj++;
-        }
-        int di=i,dj=j;
-        while(di<n&&dj<n)
-        {
-            if(st[di][dj]=='Q')
-                return(0);
-            di++;
-        }
-          int ri=i,rj=j;
-        while(ri<n&&rj<n)
-        {
-            if(st[ri][rj]=='Q')
-                return(0);
-            rj++;
-        }
-         int ui=i,uj=j;
-        while(ui>=0&&uj>=0)
-        {
-            if(st[ui][uj]=='Q')
-                return(0);
-            ui--;
-        }
-        int li=i,lj=j;
-          while(li>=0&&lj>=0)
+            for(int i=row;i>=0;i--)
             {
-            if(st[li][lj]=='Q')
-                return(0);
-            lj--;
+                if(q[i][col]=='Q')
+                {
+                    return 0;
+                }
             }
-        int dli=i,dlj=j;
-        while(dli>=0&&dlj<n)
+         for(int i=row,j=col;i>=0&&j>=0;i--,j--)
+         {
+             if(q[i][j]=='Q')
+                 return 0;
+         }
+        for(int i=row,j=col;i>=0&&j<n;i--,j++)
         {
-            if(st[dli][dlj]=='Q')
+            if(q[i][j]=='Q')
                 return(0);
-            dli--;
-            dlj++;
         }
-         int dri=i,drj=j;
-        while(dri<n&&drj>=0)
-        {
-            if(st[dri][drj]=='Q')
-                return(0);
-            dri++;
-            drj--;
-        }
-       // cout<<i<<j<<endl;
         return(1);
     }
-    
-    void fun(int i,int ans,int n,vector<string> &st)
+    void backtrack(vector<string> &q,int row,int n)
     {
-        if(ans==n)
+        if(row==n)
         {
-            v.push_back(st);
-        }
-        if(i==n)
+            ans.push_back(q);
             return;
-     
-        for(int j=0;j<n;j++)
+        }
+        else
         {
-            if(check(st,i,j,n))
+            for(int col=0;col<n;col++)
             {
-                st[i][j]='Q';
-                fun(i+1,ans+1,n,st);
-                st[i][j]='.';
-                
+                if(isvalid(row,col,q,n))
+                {
+                    q[row][col]='Q';
+                    backtrack(q,row+1,n);
+                    q[row][col]='.';
+                }
             }
         }
+        
     }
     vector<vector<string>> solveNQueens(int n) {
-        int ans=0;
-        vector<string> st;
-        for(int i=0;i<n;i++)
-        {
-            string str="";
-            for(int j=0;j<n;j++)
-            {
-                str+='.';
-            }
-            st.push_back(str);
-          //  cout<<st[i]<<endl;
-        }
-        fun(0,ans,n,st);
-        return(v);
+       vector<string> q(n,string(n,'.'));
+        backtrack(q,0,n);
+        return(ans);
+        
     }
 };

@@ -1,0 +1,66 @@
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+    
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+        random = NULL;
+    }
+};
+*/
+
+class Solution {
+public:
+   
+    Node* copyRandomList(Node* head) {
+        //step 1 : crete the next pointer of each node as it's deep copy;
+        Node *p=head,*nhead=NULL,*prev;
+        while(p!=NULL)
+        {
+            Node  *temp=new Node(p->val);
+            prev=p;
+            p=p->next;
+            prev->next=temp;
+            temp->next=p;
+            if(nhead==NULL)
+            {
+                nhead=temp;
+            }
+        }
+        //step2 : connect the random pointers of the copy nodes by seeing it's original
+        p=head;
+        while(p!=NULL)
+        {
+           if(p->random!=NULL)
+               p->next->random=p->random->next; //as we know the next node is the deep copy of that node
+            p=p->next;
+            if(p!=NULL)
+                p=p->next;
+        }
+        //step3: seperate the copy nodes and orginal nodes
+        prev=head;
+        p=nhead;
+        Node *f;
+        while(prev!=NULL)
+        {
+            
+            f=prev->next->next;
+            if(f!=NULL)
+            {
+                p->next=f->next;
+                p=f->next;
+            }
+            prev->next=f;
+            prev=f;
+            
+            
+        }
+        return(nhead);
+        
+    }
+};

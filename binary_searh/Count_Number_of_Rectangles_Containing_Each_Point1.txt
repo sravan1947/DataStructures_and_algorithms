@@ -1,0 +1,59 @@
+class Solution {
+public:
+    int b_search(vector<int> &v,int x)
+    {
+        int i=0,j=v.size()-1;
+        int mid;
+        int ans=j+1;
+        while(i<=j)
+        {
+            mid=i+(j-i)/2;
+            if(v[mid]>=x)
+            {
+                j=mid-1;
+                ans=mid;
+                
+            }
+            else
+            {
+               i=mid+1;  
+            }
+        }
+        return(ans);
+    }
+    vector<int> countRectangles(vector<vector<int>>& rect, vector<vector<int>>& pt) {
+        unordered_map<int,vector<int>> un_mp(101);
+        vector<int> v;
+        int n=rect.size();
+        int ans=0;
+        for(int i=0;i<n;i++)
+        {
+            un_mp[rect[i][1]].push_back(rect[i][0]);
+        }
+        for(int i=0;i<=100;i++)
+        {
+            sort(un_mp[i].begin(),un_mp[i].end());
+        }
+        for(auto i=pt.begin();i!=pt.end();i++)
+        {
+            int x=(*i)[0];
+            int y=(*i)[1];
+            for(int j=y;j<=101;j++)
+            {
+                if(un_mp.find(j)!=un_mp.end())
+                {
+                    int k=b_search(un_mp[j],x);
+                   int si=un_mp[j].size();
+                    ans+=(si-k);
+//                cout<<j<<" "<<x<<" "<<ans<<endl; 
+
+                
+                }
+            }
+            
+               v.push_back(ans);
+            ans=0;
+        }
+        return(v);
+    }
+};

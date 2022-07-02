@@ -1,0 +1,90 @@
+There is BST given with root node with key part as an integer only.
+ You need to find the in-order successor and predecessor of a given key. 
+ If either predecessor or successor is not found, then set it to NULL.
+
+Input:
+The first line of input contains an integer T denoting the number of test cases. 
+Then T test cases follow. Each test case contains n denoting the number of edges of the BST. 
+The next line contains the edges of the BST. The last line contains the key.
+
+
+void inorder(Node *root,Node* &pre,Node* &suc,int k)
+{
+    Node *temp=root;
+     while(temp)
+     {
+         if(temp->key>k)
+         {
+             suc=temp;
+             temp=temp->left;
+         }
+         else
+         if(temp->key<k)
+         {
+              pre=temp;
+             temp=temp->right;
+         }
+         else
+         {
+            Node *lma=temp->left,*rmi=temp->right;
+             while(lma)
+             {
+                 pre=lma;
+                 lma=lma->right;
+             }
+             while(rmi)
+             {
+                 suc=rmi;
+                 rmi=rmi->left;
+             }
+             break;
+         }
+     }
+     
+}
+
+__________________________________________________________________________________________________________________
+// This function finds predecessor and successor of key in BST.
+// It sets pre and suc as predecessor and successor respectively
+void findPreSuc(Node* root, Node*& pre, Node*& suc, int key)
+{
+    inorder(root,pre,suc,key);
+// Your code goes here
+
+}
+void inorder(Node *root,Node* &pre,Node* &suc,int k)
+{
+    Node *temp=root;
+     while(temp)
+     {
+         if(temp->key>k)
+         {
+             suc=temp;
+             temp=temp->left;
+         }
+         else
+         {
+             temp=temp->right;
+         }
+     }
+     temp=root;
+     while(temp)
+     {
+         if(temp->key>=k)
+         {
+             temp=temp->left;
+         }
+         else
+         {    pre=temp;
+             temp=temp->right;
+         }
+     }
+}
+// This function finds predecessor and successor of key in BST.
+// It sets pre and suc as predecessor and successor respectively
+void findPreSuc(Node* root, Node*& pre, Node*& suc, int key)
+{
+    inorder(root,pre,suc,key);
+// Your code goes here
+
+}

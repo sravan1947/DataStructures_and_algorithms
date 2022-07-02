@@ -1,0 +1,177 @@
+117. Populating Next Right Pointers in Each Node II
+
+Share
+Given a binary tree
+
+struct Node {
+  int val;
+  Node *left;
+  Node *right;
+  Node *next;
+}
+Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to NULL.
+
+Initially, all next pointers are set to NULL.
+
+ 
+
+
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+    Node* next;
+
+    Node() : val(0), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val, Node* _left, Node* _right, Node* _next)
+        : val(_val), left(_left), right(_right), next(_next) {}
+};
+*/
+
+
+O(1) space O(n) time;
+
+class Solution {
+public:
+    Node* pre_nextright(Node *root)
+    {
+        while(root)
+        {
+            root=root->next;
+            if(root&&root->left)
+                return(root->left);
+            if(root&&root->right)
+                return(root->right);
+        }
+        return(root);
+    }
+    Node* connect(Node* root) {
+        Node* temp=root;
+        Node* prev;
+        while(temp)
+        {
+            prev=temp;
+            while(prev)
+            {
+                if(prev->left)
+                {
+                    if(prev->right)
+                    {
+                      prev->left->next=prev->right;
+                    }
+                    else
+                    {
+                        prev->left->next=pre_nextright(prev);
+                    }
+                    
+                }
+                if(prev->right)
+                {
+                 
+                    if(prev->next)
+                    {
+                        if(prev->next->left)
+                        {
+                            prev->right->next=prev->next->left;
+                        }
+                        else
+                        {
+                        prev->right->next=pre_nextright(prev);
+                        }   
+                   }
+                }
+                prev=prev->next;
+            }
+            if(temp->left)
+               temp=temp->left;
+            else
+            if(temp->right)
+               temp=temp->right;
+            else
+            {
+                temp=pre_nextright(temp);
+            }
+        }
+        return(root);
+    }
+};
+
+
+_____________________________________________________________
+
+
+
+
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+    Node* next;
+
+    Node() : val(0), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val, Node* _left, Node* _right, Node* _next)
+        : val(_val), left(_left), right(_right), next(_next) {}
+};
+*/
+
+class Solution {
+public:
+    Node* connect(Node* root) {
+         queue<Node* > q;
+        if(root!=NULL)
+        { 
+            q.push(root);
+            root->next=NULL;
+        }
+        
+        while(!q.empty())
+        {
+           int n=q.size();
+            vector<Node *> v;
+            for(int i=0;i<n;i++)
+            {
+              Node* temp=q.front();
+                if(temp->left!=NULL)
+                {
+                    v.push_back(temp->left);
+                    q.push(temp->left);
+                }
+                if(temp->right!=NULL)
+                {
+                    v.push_back(temp->right);
+                    q.push(temp->right);
+                }
+                q.pop();
+            }
+             n=v.size();
+            for(int i=0;i<n-1;i++)
+            {
+                v[i]->next=v[i+1];
+            }
+            if(n>0)
+            {
+                v[n-1]->next=NULL;
+            }
+            
+        }
+        return(root);
+    }
+};
+
+
+
+
+
+

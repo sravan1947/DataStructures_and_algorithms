@@ -1,0 +1,53 @@
+Given a string s, partition s such that every substring of the 
+partition is a palindrome. Return all possible palindrome partitioning of s.
+
+A palindrome string is a string that reads the same backward as forward.
+
+Input: s = "aab"
+Output: [["a","a","b"],["aa","b"]]
+
+
+class Solution {
+public:
+    vector<vector<string>> f_ans;
+    bool check(string s)
+    {
+        int n=s.length();
+        int i=0,j=n-1;
+        while(i<j)
+        {
+            if(s[i]!=s[j])
+                return(0);
+            i++;
+            j--;
+        }
+        return(1);
+    }
+    void backtrack(string &s,int i,vector<string> &ans,int n)
+    {
+        if(i==n)
+        {
+            f_ans.push_back(ans);
+            return;
+        }
+        string temp="";
+        for(int j=i;j<n;j++)
+        {
+            temp+=s[j];
+            if(!check(temp))
+            {
+                continue;
+            }
+            
+            ans.push_back(temp);
+            backtrack(s,j+1,ans,n);
+            ans.pop_back();
+        }
+    }
+    vector<vector<string>> partition(string s) {
+        vector<string> ans;
+        string temp="";
+        backtrack(s,0,ans,s.length());
+        return(f_ans);
+    }
+};

@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int n=height.size();
+        int low=0,high=n-1;
+        int f_ans=0;
+        int l_value=0,h_value=0;
+        while(low<=high)
+        {
+            if(height[low]<height[high])
+            {
+               if(l_value<height[low])
+               {
+                   l_value=height[low];
+               }
+               else
+               {
+                   f_ans+=(l_value-height[low]);
+               }
+                low++;
+            }
+            else
+            {
+                if(h_value<height[high])
+                {
+                    h_value=height[high];
+                }
+                else
+                {
+                    f_ans+=(h_value-height[high]);
+                }
+                high--;
+            }
+        }
+        return(f_ans);
+        
+    }
+};

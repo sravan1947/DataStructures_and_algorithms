@@ -1,0 +1,193 @@
+Runtime: 536 ms, faster than 64.83% of C++ online submissions for LRU Cache.
+Memory Usage: 165.2 MB, less than 70.35% of C++ online submissions for LRU Cache.
+Next challenges:
+
+
+
+class LRUCache {
+public:
+    
+    struct Node{
+        int value;
+        int key;
+        Node *left=NULL;
+        Node *right=NULL;
+    }*head=NULL,*p=NULL;
+    unordered_map<int,Node* > mp;
+    int n;
+    int si=0;
+    LRUCache(int capacity) {
+       n=capacity; 
+    } 
+    int get(int key) {
+        if(mp[key]==NULL||mp.count(key)==0)
+            return(-1);
+        int k=mp[key]->value;
+        
+        Node* temp=mp[key];
+      
+        if(head!=temp)
+        {
+            if(temp==p)
+            {
+                p=p->left;
+            }
+          
+            if(temp->left!=NULL)
+            {
+                temp->left->right=temp->right;
+            }
+            if(temp->right!=NULL)
+            {
+                temp->right->left=temp->left;
+                
+                
+            }
+            
+            temp->right=NULL;
+            temp->left=NULL;
+            temp->right=head;
+            head->left=temp;
+            head=temp;
+            
+        }
+        return(k);
+    
+    }
+    
+    void put(int key, int value) {
+    if(mp[key]==NULL||mp.count(key)==0)
+    {
+        if(si<n)
+        {
+          if(head==NULL)
+          {
+              Node* temp=new Node;
+              temp->key=key;
+              temp->value=value;
+              mp[key]=temp;
+              head=temp;
+              p=temp;
+          }
+          else
+          {
+             Node* temp=new Node;
+              temp->value=value;
+              temp->key=key;
+              mp[key]=temp;
+              head->left=temp;
+              temp->right=head;
+              head=temp;
+
+          }
+            si++;
+        }
+        else
+        {
+            mp[p->key]=NULL;
+            p=p->left;
+            if(p!=NULL)
+            p->right=NULL;
+            if(p==NULL)
+                head=NULL;
+        if(head==NULL)
+          {
+              Node* temp=new Node;
+              temp->key=key;
+              temp->value=value;
+              mp[key]=temp;
+              head=temp;
+              p=temp;
+          }
+          else
+          {
+             Node* temp=new Node;
+              temp->value=value;
+              temp->key=key;
+              mp[key]=temp;
+               head->left=temp;
+              temp->right=head;
+              head=temp;
+
+          }
+     }
+    }
+    else
+    {
+        Node* temp=mp[key];
+        temp->value=value;
+        if(head!=temp)
+        {
+            if(temp==p)
+            {
+                p=p->left;
+            }
+            if(temp->left!=NULL)
+            {
+                temp->left->right=temp->right;
+            }
+            if(temp->right!=NULL)
+            {
+                temp->right->left=temp->left;
+            }
+            temp->right=NULL;
+            temp->left=NULL;
+            temp->right=head;
+            head->left=temp;
+            head=temp;
+            //cout<<head->key<<endl;
+        }
+        else
+        {
+            head->key=key;
+            head->value=value;
+        }
+        mp[key]=head;
+    }
+
+    }
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
+
+
+ class LRUCache
+{
+    public:
+        list<pair<int,int>> l;
+        unordered_map<int,list<pair<int, int>>::iterator> m;
+        int size;
+        LRUCache(int capacity)
+        {
+            size=capacity;
+        }
+        int get(int key)
+        {
+            if(m.find(key)==m.end())
+                return -1;
+            l.splice(l.begin(),l,m[key]);
+            return m[key]->second;
+        }
+        void put(int key, int value)
+        {
+            if(m.find(key)!=m.end())
+            {
+                l.splice(l.begin(),l,m[key]);
+                m[key]->second=value;
+                return;
+            }
+            if(l.size()==size)
+            {
+                auto d_key=l.back().first;
+                l.pop_back();
+                m.erase(d_key);
+            }
+            l.emplace_front(key,value);
+            m[key]=l.begin();
+        }
+};

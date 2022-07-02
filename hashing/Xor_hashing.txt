@@ -1,0 +1,35 @@
+Given an array of integers A and an integer B.
+
+Find the total number of subarrays having bitwise XOR of all elements equals to B.
+
+
+ A = [4, 2, 2, 6, 4]
+ B = 6
+
+
+    
+B=A^C
+C=A^B
+count number of C's
+A is cummulative xor;
+B is given;
+
+
+int Solution::solve(vector<int> &A, int B) {
+
+    unordered_map<int,int> mp;
+    int k=0;
+    int ans=0;
+    int n1=A.size();
+    for(int i=0;i<n1;i++)
+    {
+        k=k^A[i];
+        if(k==B)
+        {
+            ans++;
+        }
+        ans+=mp[(k^B)];
+        mp[k]++;
+    }
+    return(ans);
+}

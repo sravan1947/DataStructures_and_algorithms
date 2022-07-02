@@ -1,0 +1,39 @@
+Number of Flowers in Full Bloom
+You are given a 0-indexed 2D integer array flowers, where flowers[i] = [starti, endi] means the ith flower will be in full bloom from 
+starti to endi (inclusive). You are also given a 0-indexed integer array persons of size n, where persons[i] is the time that the ith 
+person will arrive to see the flowers.
+Return an integer array answer of size n, where answer[i] is the number of flowers that are in full bloom when the ith person arrives.
+
+
+
+Input: flowers = [[1,6],[3,7],[9,12],[4,13]], persons = [2,3,7,11]
+Output: [1,2,2,2]
+Explanation: The figure above shows the times when the flowers are in full bloom and when the people arrive.
+For each person, we return the number of flowers in full bloom during their arrival.
+
+
+
+
+class Solution {
+public:
+    vector<int> fullBloomFlowers(vector<vector<int>>& flowers, vector<int>& persons) {
+        vector<int> start_f;
+        vector<int> end_f;
+        int n=flowers.size();
+        for(auto& t:flowers)
+        {
+            start_f.push_back(t[0]);
+            end_f.push_back(t[1]);
+        }
+        sort(start_f.begin(),start_f.end()); 
+        sort(end_f.begin(),end_f.end());
+        vector<int> ans;
+        for(auto& p: persons)
+        {
+            int up=upper_bound(start_f.begin(),start_f.end(),p)-start_f.begin(); //returns the first value which is greater that p;
+            int lb=lower_bound(end_f.begin(),end_f.end(),p)-end_f.begin(); // returns the first value whichs is not less than the value p;
+            ans.push_back(up-lb);
+        }
+        return(ans);
+    }
+};

@@ -1,0 +1,94 @@
+
+Given the root of a binary tree, return the length of the diameter of the tree.
+
+The diameter of a binary tree is the length of the longest path between any two nodes in a tree. This path may or 
+may not pass through the root.
+
+The length of a path between two nodes is represented by the number of edges between them.
+
+
+
+**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int f_ans=0;
+    int height(TreeNode *root)
+    {
+        if(root==NULL)
+        {
+            return(0);
+        }
+        return(1+max(height(root->left),height(root->right)));
+    }
+     int dofbt(TreeNode *root)
+    {
+        if(root==NULL)
+            return(0);
+        int a=height(root->left);
+        int b=height(root->right);
+        int left=dofbt(root->left);
+        int right=dofbt(root->right);
+        f_ans=max(f_ans,a+b);
+         return(max(a,b));
+    }
+    int diameterOfBinaryTree(TreeNode* root) {
+        if(root==NULL)
+            return(0);
+        int k=dofbt(root);
+        return(f_ans);
+    }
+};
+
+
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int f_ans=0;
+    int height(TreeNode *root)
+    {
+        if(root==NULL)
+        {
+            return(0);
+        }
+        return(1+max(height(root->left),height(root->right)));
+    }
+     int dofbt(TreeNode *root)
+    {
+        if(root==NULL)
+            return(0);
+        
+        int a=1+dofbt(root->left);
+        int b=1+dofbt(root->right);
+        f_ans=max(f_ans,a+b-1);
+         return(max(a,b));
+    }
+    int diameterOfBinaryTree(TreeNode* root) {
+        if(root==NULL)
+            return(0);
+        int k=dofbt(root);
+        return(f_ans-1);
+    }
+};
+

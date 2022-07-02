@@ -1,0 +1,79 @@
+You are given two non-empty linked lists representing two non-negative integers.
+The digits are stored in reverse order, and each of their nodes contains a single digit. 
+Add the two numbers and return the sum as a linked list.
+
+You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
+ 
+Input: l1 = [2,4,3], l2 = [5,6,4]
+Output: [7,0,8]
+Explanation: 342 + 465 = 807.
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *head=NULL,*p=NULL;
+    int c=0;
+    void add(ListNode *l1,ListNode *l2)
+    {
+         
+        while(l1!=NULL||l2!=NULL)
+        {
+            
+            ListNode *temp=new ListNode;
+            temp->next=NULL;
+            int su=0;
+            if(l1!=NULL)
+            {
+                su+=(l1->val);
+                l1=l1->next;
+            }
+            if(l2!=NULL)
+            {
+                su+=(l2->val);
+                l2=l2->next;
+            }
+            su+=c;
+            c=su/10;
+            su=su%10;
+           // cout<<su<<endl;
+            if(head==NULL)
+             {
+                head=temp;
+                temp->val=su;
+                 p=head;
+              }
+            else
+             {
+               p->next=temp;
+                p=temp;
+               p->val=su;
+              
+             }
+                
+        }
+    }
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        head=NULL,p=NULL;
+        c=0;
+         ListNode *temp=new ListNode;
+             temp->next=NULL;
+        add(l1,l2);
+        if(c!=0)
+        {
+            p->next=temp;
+            temp->val=c;
+        }
+        return(head);
+    }
+};
