@@ -1,0 +1,71 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string str="";
+    int i=-1;
+    void preorder(TreeNode* root)
+    {
+        if(root!=NULL)
+        {
+            str+=to_string(root->val);
+            str+="D";
+            preorder(root->left);
+            preorder(root->right);
+        }
+        else
+        {
+            str+="N";
+        }
+    }
+    string serialize(TreeNode* root) {
+        str="";
+        preorder(root);
+        return(str);
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* construct(string data,int n)
+    {
+          i++;
+        if(i<n&&data[i]!='N')
+        {
+            string st="";
+            if(data[i]=='-')
+            {
+                st+=data[i];
+                i++;
+            }
+            while(i<n&&(data[i]>='0'&&data[i]<='9')&&data[i]!='D')
+            {
+                st+=data[i];
+                i++;
+            }
+            cout<<st<<endl;
+            TreeNode* root=new TreeNode(stoi(st));
+            root->left=construct(data,n);
+            root->right=construct(data,n);
+            return(root);
+        }
+        return(NULL);
+    }
+    TreeNode* deserialize(string data) {
+        TreeNode *root;
+        int n=data.size();
+        //cout<<data<<endl;
+        return(construct(data,n));
+    }
+};
+
+// Your Codec object will be instantiated and called as such:
+// Codec ser, deser;
+// TreeNode* ans = deser.deserialize(ser.serialize(root));

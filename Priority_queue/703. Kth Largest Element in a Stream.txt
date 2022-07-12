@@ -1,0 +1,40 @@
+class KthLargest {
+public:
+    priority_queue<int,vector<int>,greater<int>> m_h;
+    int K;
+    KthLargest(int k, vector<int>& nums) {
+        K=k;
+        int n=nums.size();
+        for(int i=0;i<n;i++)
+        {
+            if(m_h.size()<k)
+             m_h.push(nums[i]);
+            else
+                if(m_h.top()<nums[i])
+            {
+                m_h.pop();
+                m_h.push(nums[i]);
+            }
+        }
+    }
+    
+    int add(int val) {
+        if(m_h.size()<K) 
+        {
+            m_h.push(val);
+        }
+        else
+        if(K==m_h.size()&&m_h.top()<val) //no need to add the value if top element is greater or equal than the val.
+        {
+           m_h.pop();
+            m_h.push(val); 
+        }
+        return(m_h.top());
+    }
+};
+
+/**
+ * Your KthLargest object will be instantiated and called as such:
+ * KthLargest* obj = new KthLargest(k, nums);
+ * int param_1 = obj->add(val);
+ */

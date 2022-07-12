@@ -1,0 +1,60 @@
+You are given a 0-indexed integer array buses of length n, where buses[i] represents the departure time of the ith bus. You are also given a 0-indexed integer array passengers of length m, where passengers[j] represents the arrival time of the jth passenger. All bus departure times are unique. All passenger arrival times are unique.
+
+You are given an integer capacity, which represents the maximum number of passengers that can get on each bus.
+
+The passengers will get on the next available bus. You can get on a bus that will depart at x minutes if you arrive at y minutes where y <= x, and the bus is not full. Passengers with the earliest arrival times get on the bus first.
+
+Return the latest time you may arrive at the bus station to catch a bus. You cannot arrive at the same time as another passenger.
+
+Note: The arrays buses and passengers are not necessarily sorted.
+
+ 
+
+ Input: buses = [10,20], passengers = [2,17,18,19], capacity = 2
+Output: 16
+Explanation: 
+The 1st bus departs with the 1st passenger. 
+The 2nd bus departs with you and the 2nd passenger.
+Note that you must not arrive at the same time as the passengers, which is why you must arrive before the 2nd passenger to catch the bus.
+
+
+
+
+class Solution {
+public:
+    int latestTimeCatchTheBus(vector<int>& b, vector<int>& p, int c) {
+        int k=c;
+        sort(b.begin(),b.end());
+        sort(p.begin(),p.end());
+        int prev=0;
+        int n=p.size();
+        int m=b.size();
+        int i=0;
+        int ans=0;
+        for(int j=0;j<m;j++)
+        {
+            int k=0;
+            while(i<n&&k<c&&b[j]>=p[i])
+            {
+                if(p[i]-prev>1)
+                {
+                    ans=p[i]-1;
+                }
+                prev=p[i];
+                i++;
+                k++; 
+            }
+          //  cout<<b[j]<<" "<<prev<<endl;
+            if(k<c) //capacity should be seen correctly 
+            {
+               if(b[j]-prev>=1)
+                {
+                    ans=b[j];
+                }
+           
+            }
+        }
+        return(ans);
+        
+    }
+};

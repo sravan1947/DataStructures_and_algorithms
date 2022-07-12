@@ -1,0 +1,123 @@
+
+
+
+ /**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode *mainroot=NULL;
+    int check(TreeNode *root1,int k)
+    {
+        TreeNode *root=mainroot;
+        while(root)
+        {
+            if(root->val<k)
+            {
+                root=root->right;
+            }
+            else
+                if(root->val>k)
+                {
+                    root=root->left;
+                }
+            else
+                if(root1==root)
+            {
+                return(0);
+            }
+            else
+                return(1);
+        }
+        return(0);
+    }
+    bool pre(TreeNode *root,int k)
+    {
+        if(root!=NULL)
+        {
+            if(check(root,k-root->val))
+            {
+                return(1);
+            }
+            return(pre(root->left,k)||pre(root->right,k));
+        }
+        return(0);
+    }
+    bool findTarget(TreeNode* root, int k) {
+        mainroot=root;
+        return(pre(root,k));
+    }
+};
+
+
+__________________________________________________________________________________________________________________
+class Solution {
+public:
+    TreeNode *root1=NULL,*root2=NULL;
+    stack<TreeNode*> st1,st2;
+    int next(bool left)
+    {
+        if(left)
+        {
+            while(root1||!st1.empty())
+            {
+                if(root1)
+                {
+                    st1.push(root1);
+                    root1=root1->left;   
+                }
+                else
+                {
+                    TreeNode *k=st1.top();
+                    st1.pop();
+                    root1=k->right;
+                    return(k->val);
+                    
+                }
+            }
+        }
+        else
+        {
+          while(root2||!st2.empty())
+            {
+                if(root2)
+                {
+                    st2.push(root2);
+                    root2=root2->right;   
+                }
+                else
+                {
+                    TreeNode *k=st2.top();
+                    st2.pop();
+                    root2=k->left;
+                    return(k->val);
+                }
+            }  
+        }
+        return(-1);
+    }
+    bool findTarget(TreeNode* root, int k) {
+        root1=root;
+        root2=root;
+        for(int i=next(true),j=next(false);i<j;)
+        {
+            if(i+j==k)
+                return(true);
+            if(i+j<k)
+            {
+                i=next(true);
+            }
+            else
+                j=next(false);
+        }
+        return(false);
+    }
+};

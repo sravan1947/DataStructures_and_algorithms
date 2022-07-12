@@ -1,0 +1,128 @@
+
+
+
+// { Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+// Tree Node
+struct Node
+{
+    int data;
+    Node* left;
+    Node* right;
+};
+
+// Utility function to create a new Tree Node
+Node* newNode(int val)
+{
+    Node* temp = new Node;
+    temp->data = val;
+    temp->left = NULL;
+    temp->right = NULL;
+    
+    return temp;
+}
+
+
+// This function should return head to the DLL
+class Solution
+{
+    public: 
+    Node* preorder(Node *root)
+    {
+        if(root!=NULL)
+        {
+           if(root->left)
+           {
+                Node *pre=preorder(root->left);
+                while(pre->right)
+                {
+                    pre=pre->right;
+                }
+                root->left=pre;
+                pre->right=root;
+           }
+           if(root->right)
+           {
+                Node *suc=preorder(root->right);
+                while(suc->left)
+                {
+                    suc=suc->left;
+                }
+                root->right=suc;
+                suc->left=root;
+           }
+           return(root);
+        }
+        return(root);
+    }
+    Node * bToDLL(Node *root)
+    {
+        root=preorder(root);
+        while(root->left!=NULL)
+            root=root->left;
+        return(root);
+    }
+};
+
+____________________________________________________________________________
+___________________________________________________________________________________________________________________________________
+
+// { Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+// Tree Node
+struct Node
+{
+    int data;
+    Node* left;
+    Node* right;
+};
+
+
+ // } Driver Code Ends
+/* Structure for tree and linked list
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+    
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+};
+ */
+// This function should return head to the DLL
+class Solution
+{
+    public: 
+    Node *prev=NULL,*head=NULL;
+    void preorder(Node *root)
+    {
+        if(root==NULL)
+            return;
+        preorder(root->left);
+        if(prev==NULL)
+        {
+            head=root;
+        }
+        else
+        {
+           root->left=prev;
+           prev->right=root;
+        }
+        prev=root;
+        preorder(root->right);
+    }
+    Node * bToDLL(Node *root)
+    {
+        preorder(root);
+        return(head);
+    }
+};
+
+
