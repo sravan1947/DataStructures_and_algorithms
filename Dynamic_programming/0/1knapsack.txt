@@ -1,0 +1,143 @@
+0 - 1 Knapsack Problem
+
+
+//{ Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+class Solution
+{
+    public:
+    //Function to return max value that can be put in knapsack of capacity W.
+    int dp[1001][1001];
+    int recur(int w,int wt[],int val[],int n,int i)
+    {
+       if(i>=n||w<=0)
+        return(0);
+       
+        if(w-wt[i]<0)
+        {
+            return(recur(w,wt,val,n,i+1));
+        }
+         if(dp[i][w]!=-1)
+            return(dp[i][w]);   
+        int k=max(recur(w,wt,val,n,i+1),val[i]+recur(w-wt[i],wt,val,n,i+1));
+        cout<<i<<" "<<w<<" "<<k<<" "<<endl;
+        return(dp[i][w]=k);
+    }
+    int knapSack(int w, int wt[], int val[], int n) 
+    { 
+        memset(dp,-1,sizeof(dp));
+       // Your code her
+       return(recur(w,wt,val,n,0));
+    }
+};
+
+//{ Driver Code Starts.
+
+int main()
+ {
+    //taking total testcases
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        //reading number of elements and weight
+        int n, w;
+        cin>>n>>w;
+        
+        int val[n];
+        int wt[n];
+        
+        //inserting the values
+        for(int i=0;i<n;i++)
+            cin>>val[i];
+        
+        //inserting the weights
+        for(int i=0;i<n;i++)
+            cin>>wt[i];
+        Solution ob;
+        //calling method knapSack()
+        cout<<ob.knapSack(w, wt, val, n)<<endl;
+        
+    }
+	return 0;
+}
+// } Driver Code Ends
+
+
+//{ Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+class Solution
+{
+    public:
+    //Function to return max value that can be put in knapsack of capacity W.
+    int knapSack(int w, int wt[], int val[], int n) 
+    { 
+        int dp[n+1][w+1];      
+        memset(dp,0,sizeof(dp));
+       // Your code her
+       for(int i=0;i<=n;i++)
+       {
+           for(int j=0;j<=w;j++)
+           {
+               if(i==0||j==0)
+               {
+                   dp[i][j]=0;
+               }
+               else
+               {
+                   if(j-wt[i-1]>=0)
+                   {
+                        dp[i][j]=max(val[i-1]+dp[i-1][j-wt[i-1]],dp[i-1][j]);
+                   }
+                    else
+                    {
+                        dp[i][j]=dp[i-1][j];
+                    }
+               }
+           }
+       }
+       return(dp[n][w]);
+    }
+};
+
+____________________________________________________________________________________________
+
+//{ Driver Code Starts.
+
+int main()
+ {
+    //taking total testcases
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        //reading number of elements and weight
+        int n, w;
+        cin>>n>>w;
+        
+        int val[n];
+        int wt[n];
+        
+        //inserting the values
+        for(int i=0;i<n;i++)
+            cin>>val[i];
+        
+        //inserting the weights
+        for(int i=0;i<n;i++)
+            cin>>wt[i];
+        Solution ob;
+        //calling method knapSack()
+        cout<<ob.knapSack(w, wt, val, n)<<endl;
+        
+    }
+	return 0;
+}
+// } Driver Code Ends

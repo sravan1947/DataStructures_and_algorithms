@@ -1,0 +1,138 @@
+131. Palindrome Partitioning
+
+Given a string s, partition s such that every substring of the partition is a palindrome. 
+Return all possible palindrome partitioning of s.
+
+A palindrome string is a string that reads the same backward as forward.
+
+ 
+
+class Solution {
+public:
+    vector<vector<string>> f_ans;
+    int dp[1000][1000];
+    int check(string &st,int i,int j)
+    {
+        
+        while(i<j)
+        {
+            //cout<<i<<" "<<j<<" "<<dp[i][j]<<" "<<st[i]<<" "<<st[j]<<endl;
+            if(dp[i][j]!=-1)
+                return(dp[i][j]);
+            if(st[i]!=st[j])
+                return(0);
+            i++;
+            j--;
+           // cout<<i<<" "<<j<<" "<<endl;
+        }
+        return(1);
+    }
+    void recur(int i,int n,vector<string> &v,string &s)
+    {
+        if(i==n)
+        {
+            f_ans.push_back(v);
+        }
+        string st="";
+        for(int j=i;j<n;j++)
+        {
+          //  cout<<i<<" "<<j<<endl;
+            st+=s[j];
+            if(dp[i][j]=check(s,i,j))
+            {   
+                v.push_back(st);
+               // cout<<dp[i][j]<<" "<<endl;
+                recur(j+1,n,v,s);
+                v.pop_back();
+            }
+        }
+    }
+    vector<vector<string>> partition(string s) {
+        int n=s.length();
+        memset(dp,-1,sizeof(dp));
+        vector<string> v;
+        recur(0,n,v,s);
+        return(f_ans);
+    }
+};
+
+
+
+
+Given a string str, a partitioning of the string is a palindrome partitioning if 
+every sub-string of the partition is a palindrome. Determine the fewest cuts needed 
+for palindrome partitioning of the given string.
+
+//{ Driver Code Starts
+// Initial Template for c++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+// User function Template for C++
+
+class Solution{
+public:
+  vector<vector<string>> f_ans;
+    int dp[1000][1000],dp1[1000];
+    int check(string &st,int i,int j)
+    {
+        while(i<j)
+        {
+            if(dp[i][j]!=-1)
+                return(dp[i][j]);
+            if(st[i]!=st[j])
+                return(0);
+            i++;
+            j--;
+        }
+        return(1);
+    }
+    int recur(int i,int n,string &s)
+    {
+        if(i==n)
+        {
+            return(0);
+        }
+        if(dp1[i]!=-1)
+            return(dp1[i]);
+        int mi=1000;
+        for(int j=i;j<n;j++)
+        {
+            if(dp[i][j]==-1)
+            {
+                    dp[i][j]=check(s,i,j);
+            }
+            if(dp[i][j])
+            {   
+                mi=min(mi,1+recur(j+1,n,s));
+            }
+        }
+        return(dp1[i]=mi);
+    }
+    int palindromicPartition(string str)
+    {
+        int n=str.length();
+        memset(dp,-1,sizeof(dp));
+        memset(dp1,-1,sizeof(dp1));
+        return(recur(0,n,str)-1);
+        // code here
+    }
+};
+
+//{ Driver Code Starts.
+
+int main(){
+    int t;
+    cin>>t;
+    while(t--){
+        string str;
+        cin>>str;
+        
+        Solution ob;
+        cout<<ob.palindromicPartition(str)<<"\n";
+    }
+    return 0;
+}
+// } Driver Code Ends

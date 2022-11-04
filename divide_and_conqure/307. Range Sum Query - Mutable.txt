@@ -1,0 +1,64 @@
+class NumArray {
+public:
+    int s_t[100000];
+    int n;
+    void segment_array(int l,int r,int index,vector<int> &nums)
+    {
+        if(l==r)
+        {
+            s_t[index]=nums[l];
+              cout<<index<<" "<<s_t[index]<<endl;
+            return;
+        }
+        int mid=(l+r)/2;
+        segment_array(l,mid,index*2+1,nums);
+        segment_array(mid+1,r,index*2+2,nums);
+        s_t[index]+=s_t[index*2+1];
+        s_t[index]+=s_t[index*2+2];  
+      //  cout<<index<<" "<<s_t[index]<<endl;
+    }
+    int update(int l,int r,int i,int val,int index)
+    {
+        if(r==i&&l==i)
+        {
+            return(s_t[index]=val);
+        }
+        if(r<i||l>i)
+            return(s_t[index]);
+        int mid=(l+r)/2;
+        return(s_t[index]=update(l,mid,i,val,index*2+1)+update(mid+1,r,i,val,index*2+2));
+           
+    }
+    int query(int l,int r,int a,int b,int index)
+    {
+        if(l>=a&&r<=b)
+        {
+            return(s_t[index]);
+        }
+        if(r<a||l>b)
+            return(0);
+        int mid=(l+r)/2;
+        return(query(l,mid,a,b,index*2+1)+query(mid+1,r,a,b,index*2+2));
+    }
+    NumArray(vector<int>& nums) {
+        memset(s_t,0,sizeof(s_t));
+        n=nums.size();
+       
+        segment_array(0,n-1,0,nums);
+    }
+    
+    void update(int index, int val) {
+        int k=update(0,n-1,index,val,0);
+    }
+    
+    int sumRange(int left, int right) {
+        return(query(0,n-1,left,right,0));
+    }
+};
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray* obj = new NumArray(nums);
+ * obj->update(index,val);
+ * int param_2 = obj->sumRange(left,right);
+ */

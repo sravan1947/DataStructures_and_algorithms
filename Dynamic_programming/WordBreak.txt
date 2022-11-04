@@ -1,0 +1,48 @@
+139. Word Break
+
+
+Given a string s and a dictionary of strings wordDict, return true if s can be segmented into a space-separated 
+sequence of one or more dictionary words.
+
+Note that the same word in the dictionary may be reused multiple times in the segmentation.
+
+
+class Solution {
+public:
+    int dp[10000];
+    int check(string s,string str)
+    {
+        int m=s.length();
+        for(int j=0;j<m;j++)
+        {
+            if(s[j]!=str[j])
+                return(0);
+        }
+        return(1);
+    }
+    int recur(string s, vector<string>& wordDict,int n,int m,string ans)
+    {
+        if(s==ans)
+            return(1);
+        if(dp[ans.length()]!=-1)
+            return(dp[ans.length()]);
+        for(int j=0;j<m;j++)
+        {
+            if(check(ans+wordDict[j],s))
+            {
+                
+                dp[ans.length()]=recur(s,wordDict,n,m,ans+wordDict[j]);
+                if(dp[ans.length()])    
+                    return(1);
+            }
+        }  
+        return(0);
+    }
+    bool wordBreak(string s, vector<string>& wordDict) {
+        int n=s.length();
+        int m=wordDict.size();
+        memset(dp,-1,sizeof(dp));
+        string ans="";
+        return(recur(s,wordDict,n,m,ans));
+    }
+};

@@ -1,0 +1,80 @@
+class WordDictionary {
+public:
+    struct Node 
+    {
+        Node *trie[26]={NULL};
+        bool flag=0;
+    }*root=NULL;
+    
+    Node* newnode()
+    {
+        Node *temp = new Node ;
+        
+        return(temp);
+    }
+    WordDictionary() {
+        
+    }
+    void addWord(string word) {
+        if(root==NULL)
+        {
+            root=newnode();
+        }
+        Node* temp=root;
+        int n=word.length();
+        for(int i=0;i<n;i++)
+        {
+            if(temp->trie[word[i]-'a']==NULL)
+            {
+                temp->trie[word[i]-'a']=newnode();
+            }
+            temp=temp->trie[word[i]-'a'];
+        }
+        temp->flag=true;
+    }
+    
+    bool check(string &word,Node *temp,int i,int &n)
+    {
+        if(temp==NULL)
+            return(false);
+         if(i==n)
+            {
+                if(temp->flag==true)
+                    return(true);
+                return(false);
+            }
+        if(word[i]!='.')
+        {
+           
+            return(check(word,temp->trie[word[i]-'a'],i+1,n));
+        }
+        else
+        {
+            for(int j=0;j<26;j++)
+            {
+                
+                    if(temp->trie[j])
+                    {
+                        if(check(word,temp->trie[j],i+1,n))
+                            return(true);
+                    }
+            }
+        }
+        return(false);
+    }
+    bool search(string word) {
+        int n=word.length();
+        if(root&&check(word,root,0,n))
+        {
+            return(1);
+        }
+        return(0);
+    }
+};
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary* obj = new WordDictionary();
+ * obj->addWord(word);
+ * bool param_2 = obj->search(word);
+ */

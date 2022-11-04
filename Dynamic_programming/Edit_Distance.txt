@@ -1,0 +1,64 @@
+72. Edit Distance
+
+Given two strings word1 and word2, return the minimum number of operations required to convert word1 to word2.
+
+You have the following three operations permitted on a word:
+
+Insert a character
+Delete a character
+Replace a character
+
+
+
+Input: word1 = "horse", word2 = "ros"
+Output: 3
+Explanation: 
+horse -> rorse (replace 'h' with 'r')
+rorse -> rose (remove 'r')
+rose -> ros (remove 'e')
+
+
+class Solution {
+public:
+    int dp[1001][1001];
+    int ed(string word1,string word2,int n,int m,int i,int j)
+    {
+        if(i>=n&&j>=m)
+            return(0);
+        if(dp[i][j]!=-1)
+            return(dp[i][j]);
+        if(word1[i]==word2[j])
+        {
+            return(dp[i][j]=ed(word1,word2,n,m,i+1,j+1));   
+        }
+        else
+        {
+            int a=INT_MAX,b=INT_MAX,c=INT_MAX;
+            if(i<n&&j<m)
+            {
+                c=1+ed(word1,word2,n,m,i+1,j+1); //replace
+            }
+            if(i<n)
+            {
+                 a=1+ed(word1,word2,n,m,i+1,j); //delete
+            }
+            if(j<m)
+            {
+                b=1+ed(word1,word2,n,m,i,j+1); //insert
+            }
+            dp[i][j]=min(a,min(b,c));
+            cout<<i<<" "<<j<<" "<<dp[i][j]<<endl;
+            return(dp[i][j]);
+
+        }
+    }
+    int minDistance(string word1, string word2) {
+        int n=word1.size();
+        int m=word2.size();
+        memset(dp,-1,sizeof(dp));
+      
+        int k=ed(word1,word2,n,m,0,0);
+       
+        return(k);
+    }
+};

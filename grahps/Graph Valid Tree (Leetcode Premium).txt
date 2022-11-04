@@ -1,0 +1,68 @@
+int dfs(int i,int p,vector<int> v[],int vis[])
+{
+    //cout<<i<<endl;
+    if(vis[i]==1)
+        return(1);
+    vis[i]=1;
+    for(auto j:v[i])
+    {
+        if(j!=p)
+        {
+          if(dfs(j,i,v,vis))
+            return(1);
+        }
+    }
+    return(0);
+}
+bool checkgraph(vector<vector<int>> edges, int n, int m)
+{
+    // write your code here
+    vector<int> v[n];
+    for(auto i:edges)
+    {
+        v[i[0]].push_back(i[1]);
+        v[i[1]].push_back(i[0]);
+    }
+    int vis[n]={0};
+     int k=1-dfs(0,0,v,vis);
+    for(int i=0;i<n;i++)
+    {
+      //  cout<<vis[i]<<endl;
+        if(!vis[i])
+            return(0);
+    }
+    
+    return(k);
+ }
+
+_____________________________________________________________________________________________
+void dfs(int i,int p,vector<int> v[],int vis[])
+{
+    //cout<<i<<endl;
+     vis[i]=1;
+    for(auto j:v[i])
+    {
+        if(vis[j]!=1)
+          dfs(j,i,v,vis);        
+    }
+}
+bool checkgraph(vector<vector<int>> edges, int n, int m)
+{
+    // write your code here
+    vector<int> v[n];
+    for(auto i:edges)
+    {
+        v[i[0]].push_back(i[1]);
+        v[i[1]].push_back(i[0]);
+    }
+    int vis[n]={0};
+    dfs(0,0,v,vis);
+    for(int i=0;i<n;i++)
+    {
+      //  cout<<vis[i]<<endl;
+        if(!vis[i])
+            return(0);
+    }
+    
+    return(m==n-1);
+ }

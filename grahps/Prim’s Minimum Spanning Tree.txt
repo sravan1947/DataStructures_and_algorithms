@@ -1,0 +1,186 @@
+//{ Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+
+
+class Solution
+{
+	public:
+	//Function to find sum of weights of edges of the Minimum Spanning Tree.
+  
+    int spanningTree(int v, vector<vector<int>> adj[])
+    {
+        // code here
+        // Code here
+        vector<int> dis(v),vis(v);
+        for(int i=0;i<v;i++)
+        {
+            vis[i]=0;
+            dis[i]=INT_MAX;
+        }
+        set<pair<int,int>> s;
+        dis[0]=0;
+         s.insert({dis[0],0});   //using set to compute in o(logn);
+        while(s.size())
+        {
+            pair<int, int> tmp = *(s.begin());
+            int u=tmp.second;
+            s.erase(s.begin());
+            vis[u]=1;
+            for(auto j: adj[u])
+            {
+                if(vis[j[0]]==0&&dis[j[0]]>j[1])
+                {
+                    if(dis[j[0]]!=INT_MAX)
+                    {
+                        s.erase(s.find(make_pair(dis[j[0]],j[0])));
+                    }
+                    s.insert({j[1],j[0]});
+                    dis[j[0]]= j[1];
+                }
+            }
+            
+        }
+        int ans=0;
+        for(int i=0;i<v;i++)
+        {
+            ans+=dis[i];
+        }
+        return(ans);
+    }
+    
+};
+
+//{ Driver Code Starts.
+
+
+int main()
+{
+    int t;
+    cin >> t;
+    while (t--) {
+        int V, E;
+        cin >> V >> E;
+        vector<vector<int>> adj[V];
+        int i=0;
+        while (i++<E) {
+            int u, v, w;
+            cin >> u >> v >> w;
+            vector<int> t1,t2;
+            t1.push_back(v);
+            t1.push_back(w);
+            adj[u].push_back(t1);
+            t2.push_back(u);
+            t2.push_back(w);
+            adj[v].push_back(t2);
+        }
+        
+        Solution obj;
+    	cout << obj.spanningTree(V, adj) << "\n";
+    }
+
+    return 0;
+}
+
+
+// } Driver Code Ends
+
+
+_______________________________________________________________________________________________
+
+//{ Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+
+
+class Solution
+{
+	public:
+	//Function to find sum of weights of edges of the Minimum Spanning Tree.
+    int min_nonvisited(vector<int> &vis,vector<int> &dis,int v)
+    {
+        int mi=INT_MAX,u=-1;
+        for(int i=0;i<v;i++)
+        {
+            if(vis[i]==0&&dis[i]<mi)
+            {
+                mi=dis[i];
+                u=i;
+            }
+        }
+        return(u);
+    }
+    int spanningTree(int v, vector<vector<int>> adj[])
+    {
+        // code here
+        // Code here
+        vector<int> dis(v),vis(v);
+        for(int i=0;i<v;i++)
+        {
+            vis[i]=0;
+            dis[i]=INT_MAX;
+        }
+        dis[0]=0;
+        for(int i=0;i<v;i++)
+        {
+            int u= min_nonvisited(vis,dis,v);
+            if(u!=-1)
+            {
+                vis[u]=1;
+                for(auto j: adj[u])
+                {
+                    if(vis[j[0]]==0&&dis[j[0]]>j[1])
+                    {
+                       // cout<<j[0]<<" "<<j[1]<<endl;
+                       dis[j[0]]=j[1];
+                    }
+                }
+            }
+        }
+        int ans=0;
+        for(int i=0;i<v;i++)
+        {
+            ans+=dis[i];
+        }
+        return(ans);
+    }
+    
+};
+
+//{ Driver Code Starts.
+
+
+int main()
+{
+    int t;
+    cin >> t;
+    while (t--) {
+        int V, E;
+        cin >> V >> E;
+        vector<vector<int>> adj[V];
+        int i=0;
+        while (i++<E) {
+            int u, v, w;
+            cin >> u >> v >> w;
+            vector<int> t1,t2;
+            t1.push_back(v);
+            t1.push_back(w);
+            adj[u].push_back(t1);
+            t2.push_back(u);
+            t2.push_back(w);
+            adj[v].push_back(t2);
+        }
+        
+        Solution obj;
+    	cout << obj.spanningTree(V, adj) << "\n";
+    }
+
+    return 0;
+}
+
+
+// } Driver Code Ends

@@ -1,0 +1,52 @@
+
+152. Maximum Product Subarray
+
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int n=nums.size();
+        int max_i=nums[0];
+        int min_i=nums[0];
+        int cur=0;
+        int ans=INT_MIN;
+        ans=max(ans,max_i);
+        for(int i=1;i<n;i++)
+        {
+            int curr1=max(nums[i],max(min_i*nums[i],max_i*nums[i]));
+            int curr2=min(nums[i],min(min_i*nums[i],max_i*nums[i]));
+            max_i=curr1;
+            min_i=curr2;
+            ans=max(ans,max_i);
+            //cout<<max_i<<" "<<min_i<<endl;
+        }
+
+        return(ans);
+    }
+};
+
+
+kadane's Algorithm:
+__________________________
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int n=nums.size();
+        int max_i=nums[0];
+        int min_i=nums[0];
+        int cur=0;
+        int ans=INT_MIN;
+        ans=max(ans,max_i);
+        int cur_mi;
+        int cur_ma;
+        for(int i=1;i<n;i++)
+        {
+            cur_ma=max(nums[i],max(min_i*nums[i],max_i*nums[i]));
+            cur_mi=min(nums[i],min(min_i*nums[i],max_i*nums[i]));
+            max_i=cur_ma;
+            min_i=cur_mi;
+            ans=max(ans,max_i);
+        }
+
+        return(ans);
+    }
+};

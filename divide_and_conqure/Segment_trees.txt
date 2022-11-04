@@ -1,0 +1,87 @@
+//{ Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+int *constructST(int arr[],int n);
+
+
+int RMQ(int st[] , int n, int a, int b);
+int main()
+{
+    int T;
+    cin>>T;
+    while(T--)
+    {
+        int N;
+        cin>>N;
+        int A[N];
+        for(int i=0;i<N;i++)
+            cin>>A[i];
+        int Q;
+        cin>>Q;
+
+
+
+        int *segTree = constructST(A,N);
+
+        for(int i=0;i<Q;i++)
+        {
+            int start,e;
+            
+            cin>>start>>e;
+            if(start>e)
+            {
+                swap(start,e);
+            }
+            cout<<RMQ(segTree,N,start,e)<<" ";
+        }
+        cout<<endl;
+    }
+}
+
+// } Driver Code Ends
+
+
+/* The functions which 
+builds the segment tree */
+int s_t[100000];
+void segment_tree(int arr[],int l,int r,int index)
+{
+    if(l==r)
+    {
+        s_t[index]=arr[l];
+        return;
+    }
+    int mid=(l+r)/2;
+    segment_tree(arr,l,mid,index*2+1);
+    segment_tree(arr,mid+1,r,index*2+2);
+    s_t[index]=min(s_t[index*2+1],s_t[index*2+2]);
+}
+int query(int l,int h,int a,int b,int index)
+{
+    
+    if(l>=a&&h<=b)
+    {
+      //  cout<<s_t[index]<<endl;
+        return(s_t[index]);
+    }
+    if(l>b||h<a)
+        return(INT_MAX);
+    int mid=(l+h)/2;
+    return(min(query(l,mid,a,b,index*2+1),query(mid+1,h,a,b,index*2+2)));
+}
+int *constructST(int arr[],int n)
+{
+  //Your code here
+  segment_tree(arr,0,n-1,0);
+}
+
+
+/* The functions returns the
+ min element in the range
+ from a and b */
+int RMQ(int st[] , int n, int a, int b)
+{
+//Your code here
+   return(query(0,n-1,a,b,0));
+}

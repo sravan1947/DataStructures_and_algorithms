@@ -1,0 +1,40 @@
+Stepping Numbers
+
+vector<int>ans;
+
+
+void dfs(int node,int A,int B){
+
+    if(node>B)return;
+
+    if(node>=A&&node<=B) ans.push_back(node);
+
+    int x,x2;
+
+    x=(node*10)+((node%10)+1);
+
+    x2=(node*10)+(node%10-1);
+
+    if(x>node&&(node%10)!=9)dfs(x,A,B);
+
+    if(x2>node&&(node%10)!=0)dfs(x2,A,B);
+
+}
+
+
+
+vector<int> Solution::stepnum(int A, int B){
+
+    ans.clear();
+
+    if(A<=0&&0<=B)ans.push_back(0);
+
+    for(int i=1;i<=9;i++) 
+
+        dfs(i,A,B);
+
+    sort(ans.begin(),ans.end());
+
+    return ans;
+
+}

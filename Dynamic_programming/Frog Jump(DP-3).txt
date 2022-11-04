@@ -1,0 +1,32 @@
+#include <bits/stdc++.h> 
+int dp[100000];
+int recur(int n,vector<int> &heights)
+{
+    if(n<=1)
+        return(0);
+    if(dp[n]!=-1)
+        return(dp[n]);
+   int a=INT_MAX;
+  a=recur(n-1,heights)+abs(heights[n-1]-heights[n-2]);
+  if(n>=3)
+  {
+    a=min(a,recur(n-2,heights)+abs(heights[n-1]-heights[n-3]));
+  }
+    return(dp[n]=a);
+}
+int frogJump(int n, vector<int> &heights)
+{
+    // Write your code here.
+    memset(dp,0,sizeof(dp));
+    
+    for(int i=1;i<n;i++)
+    {
+        int a=dp[i-1]+abs(heights[i]-heights[i-1]);
+        if(i>=2)
+        {
+         a=min(a,dp[i-2]+abs(heights[i]-heights[i-2]));
+        }
+        dp[i]=a;
+    }
+    return dp[n-1];
+}

@@ -1,0 +1,40 @@
+vector<int> ans;
+void dfs(int k,int a,int b)
+{
+    if(k>=a && k<=b)
+    {
+        ans.push_back(k);
+    }
+    
+    if(k>b||k==0)
+        return;
+  
+    int l=k%10;
+    k=k*10;
+    int stepA = l-1;
+    int stepB = l+1;
+    if(l==0)
+    {
+        dfs(k+stepB,a,b);
+    }
+    else
+    if(l==9)
+    {
+        dfs(k+stepA,a,b);
+    }
+    else
+    {
+        dfs(k+stepA,a,b);
+        dfs(k+stepB,a,b);
+    }
+}
+vector<int> Solution::stepnum(int a, int b) {
+    ans.resize(0);
+   
+    for(int i=0;i<=9;i++)
+        {
+            dfs(i,a,b);
+        }
+        sort(ans.begin(),ans.end());
+    return(ans);
+}

@@ -1,0 +1,79 @@
+300. Longest Increasing Subsequence
+Given an integer array nums, return the length of the longest strictly increasing subsequence.
+
+A subsequence is a sequence that can be derived from an array by deleting some or no elements without changing
+ the order of the remaining elements. For example, [3,6,2,7] is a subsequence of the array [0,3,1,6,2,2,7].
+
+class Solution {
+public:
+ 
+    int lengthOfLIS(vector<int>& nums) {
+        int n=nums.size();
+        vector<int> dp(n,1);
+        int ans=0;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=i+1;j<n;j++)
+            {
+                if(nums[j]>nums[i])
+                {
+                    dp[j]=max(dp[j],1+dp[i]);
+                }
+            }
+            ans=max(ans,dp[i]);
+        }
+        return(ans);
+        
+    }
+};
+
+
+_______________________________________________________________________________________________________________-
+
+int min_i(vector<int> &v,int s,int ele)
+{
+
+         int i=0,j=s;
+         int mid=(i+j)/2;
+         while(i<j)
+         {
+             mid=(i+j)/2;
+             if(v[mid]==ele)
+                return(mid);
+            if(v[mid]>ele)
+              j=mid-1;
+            else
+             i=mid+1;
+         }
+         if(v[i]<ele)
+          return(i+1);
+
+        return(i);
+}
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& arr) {
+        int n=arr.size();
+    vector<int> v;
+        if(!n)
+            return(0);
+    v.push_back(arr[0]);
+    int l=0;
+    for(int i=0;i<n;i++)
+    {
+         if(v[l]<arr[i])
+            {
+                l++;
+               v.push_back(arr[i]);
+            }
+
+            else
+            {
+               int k=min_i(v,l,arr[i]);
+              v[k]=arr[i];
+            }
+
+    }
+    return(v.size());
+    }
+};

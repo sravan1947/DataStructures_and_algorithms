@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int getSum(int a, int b) {
+        int su=(a^b);
+       unsigned int c =(a&b);  // integer will overflow if we take left shift of c;
+       
+       
+        while(c)
+        {
+            c=c<<1;
+            a=su;
+            su=(a^c);
+            c=(a&c);
+        }
+        return(su);
+        
+    }
+};

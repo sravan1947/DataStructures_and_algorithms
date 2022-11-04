@@ -1,0 +1,50 @@
+int x[]={1,-1,1,-1,1,0,-1,0};
+int y[]={1,1,-1,-1,0,1,0,-1};
+
+int dfs(vector<vector<int>> &v,int n,int m,int i,int j)
+{
+    if(i>=0&&j>=0&&i<=n&&j<=m&&v[i][j]==0)
+    {
+       //cout<<i<<" "<<j<<endl;    
+        if(i==n&&j==m)
+            return(1);
+            
+        v[i][j]=-1;
+        for(int k=0;k<8;k++)
+        {
+            //cout<<i+x[k]<<" "<<j+y[k]<<endl;
+            if(dfs(v,n,m,i+x[k],j+y[k]))
+            {
+                return(1);
+            }
+        }
+    }
+    return(0);
+}
+string Solution::solve(int n, int m, int C, int D, vector<int> &E, vector<int> &F) {
+    vector<vector<int>> v(n+1,vector<int>(m+1,0));
+    int k=E.size();
+for(int i=0;i<=n;i++)
+{
+    for(int j=0;j<=m;j++)
+    {
+        for(int f=0;f<k;f++)
+        {
+            int a=E[f];
+            int b=F[f];
+            if(pow((a-i),2)+pow((b-j),2)<=D*D)
+            {
+                //cout<<i<<" "<<j<<"tag"<<endl;
+                v[i][j]=-1;
+            }
+            
+        }
+    }
+}
+    if(dfs(v,n,m,0,0))
+    {
+        return("YES");
+    }
+    return("NO");
+    
+}

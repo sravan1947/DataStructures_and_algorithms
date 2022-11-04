@@ -1,0 +1,122 @@
+//{ Driver Code Starts
+// Initial Template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+// User function Template for C++
+
+class Solution{
+  public:
+    int dp[1000][1000];
+    int cutRod(int price[], int n) {
+        //code here
+        memset(dp,0,sizeof(dp));
+        for(int i=0;i<=n;i++)
+        {
+            for(int j=0;j<=n;j++)
+            {
+                //cout<<i<<" "<<j<<endl;
+               if(i==0||j==0)
+               {
+                   dp[i][j]=0;
+               }
+               else
+               if(j-i>=0)
+               {
+                   dp[i][j]=max(price[i-1]+dp[i][j-i],dp[i-1][j]);
+               }
+               else
+               {
+                   dp[i][j]=dp[i-1][j];
+               }
+            }
+          //  cout<<dp[i][n]<<endl;
+        }
+        return(dp[n][n]);
+    }
+};
+
+//{ Driver Code Starts.
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n;
+        cin >> n;
+        int a[n];
+        for (int i = 0; i < n; i++) 
+            cin >> a[i];
+            
+        Solution ob;
+
+        cout << ob.cutRod(a, n) << endl;
+    }
+    return 0;
+}
+// } Driver Code Ends
+__________________________________________________________________________________________________________________________________________
+//{ Driver Code Starts
+// Initial Template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+// User function Template for C++
+
+class Solution{
+  public:
+    int dp[1000][1000];
+    int rc(int sum,int i,int price[],int n)
+    {
+        
+         if(sum==0)
+            return(0);
+            
+        if(sum<0||i>n)
+            return(INT_MIN);
+        
+        if(dp[i][sum]!=-1)
+        return(dp[i][sum]);
+        
+        int k=rc(sum-i,i,price,n);
+        if(INT_MIN!=k)
+        {
+            k=k+price[i-1];
+        }
+        int f=rc(sum,i+1,price,n);
+        
+        return(dp[i][sum]=max(k,f));
+
+    }
+    int cutRod(int price[], int n) {
+        //code here
+        memset(dp,-1,sizeof(dp));
+        return(rc(n,1,price,n));
+    }
+};
+
+//{ Driver Code Starts.
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n;
+        cin >> n;
+        int a[n];
+        for (int i = 0; i < n; i++) 
+            cin >> a[i];
+            
+        Solution ob;
+
+        cout << ob.cutRod(a, n) << endl;
+    }
+    return 0;
+}
+// } Driver Code Ends

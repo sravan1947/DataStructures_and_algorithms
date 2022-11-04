@@ -1,0 +1,60 @@
+There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. 
+You are given an array prerequisites where prerequisites[i] = [ai, bi] indicates that you must take course 
+bi first if you want to take course ai.
+
+For example, the pair [0, 1], indicates that to take course 0 you have to first take course 1.
+Return the ordering of courses you should take to
+ finish all courses. If there are many valid answers, return any of them. If it is impossible to finish all courses, return an empty array
+
+
+Input: numCourses = 2, prerequisites = [[1,0]]
+Output: [0,1]
+Explanation: There are a total of 2 courses to take. To take course 1 you should have finished course 0.
+ So the correct course order is [0,1]
+
+class Solution {
+public:
+    vector<int> findOrder(int n, vector<vector<int>>& p) {
+        int indeg[n];
+        memset(indeg,0,sizeof(indeg));
+        vector<int> g[n];
+        for(auto i:p)
+        {
+            g[i[1]].push_back(i[0]);
+            indeg[i[0]]++;
+        }
+        queue<int> q;
+        for(int i=0;i<n;i++)
+        {
+            if(indeg[i]==0)
+            {
+                q.push(i);
+            }
+        }
+        vector<int> v;
+        while(!q.empty())
+        {
+            int si=q.size();
+            for(int i=0;i<si;i++)
+            {
+                int u=q.front();
+                v.push_back(u);
+                q.pop();
+                for(auto j: g[u])
+                {
+                    indeg[j]--;
+                    if(indeg[j]==0)
+                    {
+                        q.push(j);
+                    }
+                }
+            }
+        }
+        if(v.size()==n)
+            return(v);
+        vector<int> temp;
+        return(temp);
+        
+    }
+};
+
